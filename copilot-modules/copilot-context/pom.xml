@@ -38,6 +38,11 @@
             <artifactId>copilot-common-mybatis</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba.cloud.ai</groupId>
+            <artifactId>copilot-knowledge</artifactId>
+        </dependency>
+
         <!-- Spring AI -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
@@ -73,6 +78,12 @@
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-starter-mcp-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud.ai</groupId>
+            <artifactId>copilot-knowledge</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

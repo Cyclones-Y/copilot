@@ -1,11 +1,11 @@
 // 知识库管理API接口
 import {
-    isDevelopmentMode,
-    mockChunks,
-    mockDelay,
-    mockDocuments,
-    mockKnowledgeBases,
-    mockSearchResults
+  isDevelopmentMode,
+  mockChunks,
+  mockDelay,
+  mockDocuments,
+  mockKnowledgeBases,
+  mockSearchResults
 } from './mockKnowledgeData';
 import { apiUrl } from './base'
 
@@ -233,4 +233,45 @@ export const reprocessDocument = async (kbKey: string, documentId: string): Prom
   }
 
   return response.json();
+};
+
+// 刷新知识库索引
+export const refreshIndex = async (workspacePath: string): Promise<void> => {
+  // 开发模式使用模拟数据
+  /* 
+  if (isDevelopmentMode) {
+    await mockDelay(1000);
+    console.log(`Mock refresh index for path: ${workspacePath}`);
+    return;
+  }
+  */
+
+  const response = await fetch(apiUrl('/api/knowledge/index'), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ workspacePath }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`刷新索引失败: ${response.statusText}`);
+  }
+};
+
+// 获取 workspace 根目录路径
+export const getWorkspacePath = async (): Promise<string> => {
+  const response = await fetch(apiUrl('/api/knowledge/workspace-path'), {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`获取 workspace 路径失败: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data.workspacePath;
 };

@@ -431,6 +431,28 @@ CREATE TABLE `sys_user`
     PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
+CREATE TABLE IF NOT EXISTS file_index_state (
+                                                id VARCHAR(64) NOT NULL PRIMARY KEY,
+    user_id VARCHAR(64) NOT NULL,
+    file_path VARCHAR(700) NOT NULL,
+    content_hash VARCHAR(64) NOT NULL,
+    last_modified_at DATETIME,
+    file_size BIGINT,
+    INDEX idx_file_path (file_path)
+    );
+
+-- FTS 全文检索表
+-- 使用 MySQL FULLTEXT + ngram 解析器，支持中英文混合检索
+CREATE TABLE IF NOT EXISTS knowledge_fts (
+                                             id          VARCHAR(64)   NOT NULL PRIMARY KEY,
+    user_id     VARCHAR(64)   NOT NULL,
+    file_path   VARCHAR(700)  NOT NULL,
+    content     MEDIUMTEXT    NOT NULL,   -- title + signature + 代码内容
+    start_line  INT           DEFAULT 0,
+    end_line    INT           DEFAULT 0,
+    INDEX idx_kfts_user (user_id),
+    FULLTEXT INDEX idx_kfts_content (content) WITH PARSER ngram
+                                                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------

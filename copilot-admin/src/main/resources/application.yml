@@ -73,6 +73,27 @@ spring:
       api-key: ${OPENAI_API_KEY:sk-your-deepseek-api-key}  # 请替换为你的实际 DeepSeek API Key
       # DeepSeek API 地址（DeepSeek 使用 OpenAI 兼容 API，但需要设置正确的 base URL）
       base-url: ${OPENAI_BASE_URL:https://api.deepseek.com}
+      
+      # 嵌入模型配置 - Override for SiliconFlow
+      embedding:
+        api-key: ${SILICONFLOW_API_KEY:}
+        base-url: https://api.siliconflow.cn
+        options:
+          model: BAAI/bge-large-zh-v1.5
+
+    # Milvus VectorStore 配置
+    vectorstore:
+      milvus:
+        initialize-schema: true
+        client:
+          host: ${MILVUS_HOST:localhost}
+          port: ${MILVUS_PORT:19530}
+          username: ${MILVUS_USERNAME:}
+          password: ${MILVUS_PASSWORD:}
+        database-name: ${MILVUS_DATABASE:default}
+        collection-name: copilot_knowledge
+        embedding-dimension: 1024
+        metric-type: COSINE
 
 # ===================================================================
 # Redis 配置 (单机模式)
